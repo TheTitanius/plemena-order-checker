@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Проверка лимита приказа</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+  <header>
+    <div><p class="eyebrow">ИНСТРУМЕНТ ДЛЯ ИГРОКОВ</p><h1>Проверка лимита приказа</h1><p class="muted">Проверьте приказ перед отправкой ведущему</p></div>
+    <nav><button class="tab active" data-tab="check">Проверка</button><button class="tab" data-tab="help">Инструкция</button></nav>
+  </header>
+
+  <section id="check" class="panel">
+    <label class="section-label">Уровень развития</label>
+    <div class="tiers">
+      <button class="tier selected" data-tier="herd"><b>Стадо</b><small>90 букв</small></button>
+      <button class="tier" data-tier="clan"><b>Род</b><small>160 букв</small></button>
+      <button class="tier" data-tier="tribe"><b>Племя</b><small>250 букв</small></button>
+      <button class="tier" data-tier="union"><b>Союз племён</b><small>60 слов</small></button>
+      <button class="tier" data-tier="people"><b>Народ</b><small>75 слов</small></button>
+    </div>
+
+    <div class="settings">
+      <label class="setting"><span>Бонус технологий (%)</span><input id="tech" type="number" min="0" value="0"></label>
+      <label class="setting"><span>Лимит картинок</span><input id="images" type="number" min="0" value="0"></label>
+      <label class="setting"><span>Временное расширение</span><input id="temp" type="text" placeholder="+50% или +50"><small>Процент или фиксированное число</small></label>
+    </div>
+
+    <label class="section-label" for="order">Текст приказа <span id="unit-hint">· лимит в буквах</span></label>
+    <textarea id="order" placeholder="Введите или вставьте текст приказа..."></textarea>
+    <div class="actions"><button id="check-btn" class="primary">Проверить приказ</button><button id="reset-btn" class="secondary">Очистить</button><span id="stale" class="muted"></span></div>
+    <div id="result" aria-live="polite"></div>
+  </section>
+
+  <section id="help" class="panel" hidden>
+    <article><h2>Подсчёт букв</h2><p>Используется на уровнях «Стадо», «Род» и «Племя».</p><ul><li>Считаются буквы любых алфавитов и цифры.</li><li>Пробелы и знаки препинания не учитываются.</li><li>Каждый эмодзи считается за 3 буквы.</li></ul></article>
+    <article><h2>Подсчёт слов и дефисы</h2><p>Используется на уровнях «Союз племён» и «Народ».</p><ul><li>Слова разделяются пробелами и знаками-разделителями.</li><li>Эмодзи считаются отдельными словами, даже вплотную к тексту.</li><li>Известные слова через дефис считаются одним словом.</li><li>Неизвестные дефисные слова отмечаются как возможная склейка.</li><li>Склейки через запятые, точки с запятой, двоеточия и слеши без пробелов отмечаются отдельно.</li></ul></article>
+    <article><h2>Формула лимита</h2><div class="formula">floor(Базовый лимит × (1 + (Бонус технологий % + Временный %)/100)) + Временное число</div><p>Процентный бонус применяется к базовому лимиту, результат округляется вниз. Фиксированное временное расширение прибавляется после округления. Итоговый лимит не может быть меньше нуля.</p><p>Пример: Род (160) и +15% технологий = 184 буквы. При временном расширении +50% лимит составит 264; при +50 — 234.</p><p>Лимит картинок отображается отдельно и не меняет лимит букв или слов.</p></article>
+    <article><div class="dictionary-head"><h2>Словарь исключений</h2><button id="dict-toggle" class="link-button">Показать категории</button></div><div id="dictionary" hidden><input id="dict-search" class="search" placeholder="Поиск по категориям и примерам"><div id="dict-list"></div></div></article>
+    <aside>Проверка носит справочный характер. Окончательное решение принимает ведущий / модератор.</aside>
+  </section>
+  <footer>Всё вычисляется в браузере. Текст приказа никуда не отправляется.</footer>
+</main>
+<script src="script.js"></script>
+</body></html>
